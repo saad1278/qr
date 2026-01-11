@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QR Code Generator HD</title>
+<script src="https://cdn.jsdelivr.net/npm/qr-code-styling@1.6.0/lib/qr-code-styling.js"></script>
+
+<style>
+body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+}
+
+.container {
+    width: 100%;
+    max-width: 400px;
+    background: rgba(255,255,255,0.12);
+    backdrop-filter: blur(14px);
+    padding: 28px;
+    border-radius: 26px;
+    box-shadow: 0 25px 50px rgba(0,0,0,0.45);
+    text-align: center;
+}
+
+h2 {
+    margin-bottom: 24px;
+    font-size: 24px;
+}
+
+.field {
+    text-align: left;
+    margin-bottom: 18px;
+}
+
+.field label {
+    display: block;
+    font-size: 14px;
+    margin-bottom: 6px;
+    opacity: 0.85;
+}
+
+input[type="text"] {
+    width: 100%;
+    padding: 14px;
+    border-radius: 14px;
+    border: none;
+    outline: none;
+    font-size: 14px;
+}
+
+.upload-box {
+    background: rgba(255,255,255,0.15);
+    border-radius: 16px;
+    padding: 16px;
+    text-align: center;
+    cursor: pointer;
+    margin-bottom: 14px;
+}
+
+.upload-box span {
+    font-size: 14px;
+    opacity: 0.9;
+    display: block;
+}
+
+.upload-box small {
+    display: block;
+    margin-bottom: 8px;
+    color: #38f9d7;
+    font-weight: bold;
+}
+
+.upload-box input {
+    display: none;
+}
+
+button {
+    width: 100%;
+    padding: 16px;
+    border-radius: 18px;
+    border: none;
+    background: linear-gradient(135deg, #00c6ff, #0072ff);
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 12px;
+}
+
+button:hover {
+    opacity: 0.92;
+}
+
+#qr-box {
+    margin-top: 24px;
+    display: flex;
+    justify-content: center;
+}
+
+.download {
+    margin-top: 16px;
+    background: linear-gradient(135deg, #43e97b, #38f9d7);
+    color: #000;
+}
+
+.footer {
+    margin-top: 18px;
+    font-size: 12px;
+    opacity: 0.75;
+}
+
+.footer a {
+    color: #38f9d7;
+    text-decoration: none;
+    font-weight: 600;
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+    <h2>QR Code Generator HD</h2>
+
+    <div class="field">
+        <label>Enter Link</label>
+        <input type="text" id="link" placeholder="https://example.com">
+    </div>
+
+    <div class="field">
+        <label>Logo</label>
+        <label class="upload-box">
+            <small>+2 JOD</small>
+            <span>Upload Logo (Optional)</span>
+            <input type="file" id="logo" accept="image/*">
+        </label>
+    </div>
+
+    <button onclick="generateQR()">Generate QR</button>
+
+    <div id="qr-box"></div>
+
+    <button class="download" onclick="downloadQR()">Download HD QR</button>
+
+    <div class="footer">
+        © 2026 — Built by <a href="https://www.instagram.com/1_s44d/" target="_blank">1_s44d</a>
+    </div>
+</div>
+
+<script>
+let qrCode;
+
+function generateQR() {
+    const link = document.getElementById("link").value.trim();
+    const logoFile = document.getElementById("logo").files[0];
+    const qrBox = document.getElementById("qr-box");
+
+    if (!link) return;
+
+    qrBox.innerHTML = "";
+
+    const options = {
+        width: 500,
+        height: 500,
+        data: link,
+        dotsOptions: {
+            color: "#000",
+            type: "rounded"
+        },
+        cornersSquareOptions: {
+            type: "extra-rounded"
+        },
+        cornersDotOptions: {
+            type: "dot"
+        },
+        backgroundOptions: {
+            color: "#ffffff"
+        }
+    };
+
+    if (logoFile) {
+        options.image = URL.createObjectURL(logoFile);
+        options.imageOptions = {
+            crossOrigin: "anonymous",
+            margin: 6,
+            imageSize: 0.35
+        };
+    }
+
+    qrCode = new QRCodeStyling(options);
+    qrCode.append(qrBox);
+}
+
+function downloadQR() {
+    if (qrCode) {
+        qrCode.download({ name: "qr-code-hd", extension: "png" });
+    }
+}
+</script>
+
+</body>
+</html>
